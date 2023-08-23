@@ -1,13 +1,29 @@
 const db = require('../models')
-
 const Books = db.books
 
 exports.createBook = async (req, res) => {
+
+    function isValidISBN(isbn) {
+        isbn = isbn.replace(/[-\s]/g, ''); // Remove hyphens and spaces
+        
+        if (isbn.length === 10) {
+          return /^[0-9]{9}[0-9X]$/.test(isbn);
+        } else if (isbn.length === 13) {
+          return /^[0-9]{13}$/.test(isbn);
+        }
+        
+        return false;
+      }
+
     try {
         const { title, isbn } = req.body
 
         if (!title || !isbn) {
-            return res.status(400).send({ error: 'title and isbn fields are required!' })
+            return res.status(400).send({ error: 'title and ISBN fields are required!' })
+        }
+        
+        if(!isValidISBN(isbn)){
+            return res.status(400).send({ error: 'ISBN is not valid!' })
         }
 
         const bookExists = await Books.findOne({
@@ -28,6 +44,7 @@ exports.createBook = async (req, res) => {
             result: book
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).send({ error: error })
     }
 }
