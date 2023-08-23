@@ -16,3 +16,7 @@ services:
 
   db:
     image: postgres:13
+    environment:
+      POSTGRES_DB: sorin-test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
