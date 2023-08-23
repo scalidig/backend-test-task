@@ -1,0 +1,18 @@
+version: '3'
+services:
+  api:
+    build: .
+    environment:
+      DB_USER: postgres
+      HOST: db
+      DATABASE: sorin-test
+      PASSWORD: 123456
+      PORT: 5432
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: ["npm", "start"]
+
+  db:
+    image: postgres:13

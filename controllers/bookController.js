@@ -6,7 +6,7 @@ exports.createBook = async (req, res) => {
     try {
         const { title, isbn } = req.body
 
-        if (!title && !isbn) {
+        if (!title || !isbn) {
             return res.status(400).send({ error: 'title and isbn fields are required!' })
         }
 
